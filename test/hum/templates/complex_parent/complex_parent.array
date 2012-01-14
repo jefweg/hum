@@ -1,0 +1,1 @@
+[{:line=>1, :select=>[".x-msg"], :tab=>0}, {:line=>2, :select=>["p"], :tab=>1}, {:line=>3, :select=>[".x-msg.green"], :tab=>0, :parent=>1, :kids=>[4]}, {:line=>4, :select=>[".close"], :tab=>1}, {:line=>5, :select=>[".x-msg.red"], :tab=>0, :parent=>1, :kids=>[6]}, {:line=>6, :select=>[".close"], :tab=>1}]

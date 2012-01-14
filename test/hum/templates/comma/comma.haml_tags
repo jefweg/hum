@@ -1,0 +1,1 @@
+[{:line=>1, :select=>[".foo", ".bar"], :tab=>0, :haml=>["%div.foo", "%div.bar"]}]

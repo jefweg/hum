@@ -1,0 +1,12 @@
+.bar {
+  font-size: 14px;
+}
+.bar.baz {
+  font-size: 12px;
+}
+.bar.baz div {
+  font-weight: bold;
+}
+.bar.baz p {
+  font-weight: normal;
+}

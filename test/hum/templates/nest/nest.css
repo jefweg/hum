@@ -1,0 +1,9 @@
+.foo{
+	height: 100px;
+}
+.foo .bar{
+	display: inline;
+}
+.foo .bar .baz{
+	color: blue;
+}

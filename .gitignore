@@ -2,3 +2,9 @@
 .bundle
 Gemfile.lock
 pkg/*
+.DS_Store
+bin/*.css
+bin/*.html
+bin/*.sass
+bin/*.scss
+*.sass-cache

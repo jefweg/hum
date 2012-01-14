@@ -1,0 +1,18 @@
+.x-msg {
+  position: relative;
+}
+.x-msg p {
+  color: #444;
+}
+.x-msg.green {
+	background-position: 10px 10px;
+}
+.x-msg.green .close {
+	background-image:none;
+}
+.x-msg.red{
+	background-position: 12px 12px;
+}
+.x-msg.red .close {
+	background-image:none;
+}

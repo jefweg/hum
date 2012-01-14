@@ -1,0 +1,15 @@
+div {
+  font-size: 11px;
+}
+div p {
+  font-size: 12px;
+}
+div a {
+  font-size: 14px;
+}
+div.red, div.blue {
+  border: 1px solid red;
+}
+div.black, div.white {
+  border: 1px solid orange;
+}
