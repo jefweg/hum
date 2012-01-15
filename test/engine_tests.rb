@@ -10,7 +10,7 @@ class HumText < Test::Unit::TestCase
   def setup
     @machine = Hum::Engine.new
   end
-  
+
   #test SASS files
   def test_property_value
     @file = "property_value"
