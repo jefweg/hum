@@ -1,1 +1,0 @@
-[{:line=>1, :select=>[".bar"], :tab=>0, :parent=>nil, :kids=>[], :haml=>["%div.bar"]}, {:line=>2, :select=>[".bar.baz"], :tab=>0, :parent=>1, :kids=>[], :haml=>["%div.bar.baz"]}]

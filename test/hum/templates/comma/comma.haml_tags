@@ -1,1 +1,0 @@
-[{:line=>1, :select=>[".foo", ".bar"], :tab=>0, :parent=>nil, :kids=>[], :haml=>["%div.foo", "%div.bar"]}]

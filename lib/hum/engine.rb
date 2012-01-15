@@ -28,12 +28,27 @@ module Hum
         
         #the name of the output file
         @output_name = File.basename(@output_path)
-        
-        #create the output file
-        @output_file = File.open(@output_path, "w")
       end
       
       def run
+        run_haml
+        
+        #create the output file
+        @output_file = File.open(@output_path, "w")
+        
+        #output the html
+        @output_file.write(output_html)
+        
+        #close the input file
+        @input_file.close()
+        
+        #close the output file
+        @output_file.close()
+
+        puts "updated #{@output_name}!\n"
+      end
+      
+      def run_haml
         #render SASS from CSS
         render_sass
         
@@ -48,17 +63,6 @@ module Hum
         
         #generate HAML
         output_haml
-        
-        #output the html
-        @output_file.write(output_html)
-        
-        #close the input file
-        @input_file.close()
-        
-        #close the output file
-        @output_file.close()
-
-        puts "updated #{@output_name}!\n"
       end
       
       def render_sass
@@ -68,8 +72,22 @@ module Hum
         #remove all comments
         content.gsub!(/\/\*([\s\S]*?)\*\//, "")
         
-        #render sass
-        @sass = Sass::CSS.new(content).render(:sass)
+        #if CSS render SASS
+        if @input_name.match(".css")
+          @sass = Sass::CSS.new(content).render(:sass)
+          
+        #if SCSS convert to SASS
+        elsif @input_name.match(".scss")
+          puts "implement SCSS"
+          
+        #if sass keep as it
+        elsif @input_name.match("sass")
+          @sass = content
+          
+        #if nothing then put error
+        else
+          puts "implement ERROR"
+        end
       end
       
       def clean_sass
@@ -249,10 +267,19 @@ module Hum
           tag = "%" + code
         end
         
-        #give all descending tags a %
+        #give all descending tags a %, there's probably a better way to do this
         if tag.match(" ")
           tag = tag.gsub(" ", " %")
         end
+        
+        if tag.match("%.")
+          tag = tag.gsub("%.", "%div.")
+        end
+        
+        if tag.match("%#")
+          tag = tag.gsub("%#", "%div#")
+        end
+        
         tag
       end
       
@@ -262,7 +289,7 @@ module Hum
         #convert to HAML
         @haml = "%html\n"
         @haml += "\t%head\n"
-        @haml += "\t\t%link{:type => 'text/css', :rel => 'stylesheet', :href => '#{@input_name}'}\n"
+        @haml += "\t\t%link{:type => 'text/css', :rel => 'stylesheet', :href => '#{@input_name.gsub(/\..*/, ".css")}'}\n"
         @haml += "\t%body\n"
         
         #time to build the HAML
