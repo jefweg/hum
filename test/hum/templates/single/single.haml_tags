@@ -1,1 +1,1 @@
-[{:line=>1, :select=>["p"], :tab=>0, :haml=>["%p"]}]
+[{:line=>1, :select=>["p"], :tab=>0, :parent=>nil, :kids=>[], :haml=>["%p"]}]

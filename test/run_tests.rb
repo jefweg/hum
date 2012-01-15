@@ -15,19 +15,19 @@ class HumText < Test::Unit::TestCase
   def test_single
     begin_folder("single")
   end
- 
+
   def test_simple
     begin_folder("simple")
   end
-  
+
   def test_nest
     begin_folder("nest")
   end
-  
+
   def test_comma
     begin_folder("comma")
   end
-  
+
   def test_line_nest
     begin_folder("line_nest")
   end
@@ -35,7 +35,7 @@ class HumText < Test::Unit::TestCase
   def test_parent_select
     begin_folder("parent_select")
   end
-  
+
   def test_parent_nest
     begin_folder("parent_nest")
   end
@@ -47,7 +47,7 @@ class HumText < Test::Unit::TestCase
   def test_deep_nest
     begin_folder("deep_nest")
   end
-  
+
   private
   
   def begin_folder(name)
