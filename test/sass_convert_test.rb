@@ -11,10 +11,10 @@ class HumText < Test::Unit::TestCase
     @machine = Hum::Engine.new
   end
 
-  #testing invalid files
-  def test_invalid_file
+  #testing sass-convert
+  def test_sass_convert
     #get a bad file
-    file = File.open("#{File.expand_path('../', __FILE__)}/other/bad.file", "r")
+    file = File.open("#{File.expand_path('../', __FILE__)}/other/example.scss", "r")
     
     #load it
     @machine.load(file)
@@ -23,6 +23,6 @@ class HumText < Test::Unit::TestCase
     file.close()
     
     #should fail
-    assert_equal(@machine.run_haml, "")
+    assert_not_nil(@machine.run_haml)
   end
 end

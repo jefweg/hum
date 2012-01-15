@@ -1,10 +1,13 @@
 require 'rubygems'
 require 'haml'
 require 'sass'
+require 'sass/exec'
 require 'sass/css'
 require 'hum/string'
 require 'hum/array'
 require 'colored'
+require 'optparse'
+require 'fileutils'
 
 module Hum
   #Hum
@@ -18,11 +21,15 @@ module Hum
         #the array that holds the parsed CSS
         @tree = []
         
+        @input_path = file
+        
         #the name of the input file
         @input_name = File.basename(file)
         
         #read the input file
         @input_file = File.open(file, 'r')
+        
+        @directory = File.dirname(file)
         
         #the output path
         @output_path = File.absolute_path(file).gsub(/\..*/, ".html")
@@ -45,7 +52,7 @@ module Hum
         
         #close the output file
         @output_file.close()
-
+        
         puts "updated #{@output_name}!\n".green
       end
       
@@ -69,22 +76,22 @@ module Hum
       def render_sass
         #read content
         content = @input_file.read
-        
+
         #remove all comments
         content.gsub!(/\/\*([\s\S]*?)\*\//, "")
-        
+
         #if CSS render SASS
-        if @input_name.match(".css")
+        if @input_name.match(/\.css/)
           @sass = Sass::CSS.new(content).render(:sass)
-          
+
         #if SCSS convert to SASS
-        elsif @input_name.match(".scss")
-          puts "implement SCSS"
-          
+        elsif @input_name.match(/\.scss/)
+          @sass = ::Sass::Engine.new(content, { :cache => false, :read_cache => true, :syntax => :scss }).to_tree.send("to_sass")
+
         #if sass keep as it
-        elsif @input_name.match("sass")
+        elsif @input_name.match(/\.sass/)
           @sass = content
-          
+
         #if nothing then put error
         else
           puts "Hum only works with .scss, .sass and .css files.".red
