@@ -53,7 +53,7 @@ module Hum
         #close the output file
         @output_file.close()
         
-        puts "updated #{@output_name}!\n".green
+        puts "updated #{@output_name}!".green
       end
       
       def run_haml

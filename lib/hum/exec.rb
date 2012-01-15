@@ -88,9 +88,10 @@ module Hum
       def watch
         puts ">>> Hum is watching for changes. Press Ctrl-C to stop."
         begin
+          target = ""
           current_path = Dir.pwd 
           monitor = FSSM::Monitor.new
-          monitor.path current_path, "**/*.css" do
+          monitor.path current_path, ["**/*.scss", "**/*.sass"] do
             update do |b, input|
               puts ">>> Change found - #{input}..."
               @machine = Engine.new

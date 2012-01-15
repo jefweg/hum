@@ -1,35 +1,76 @@
 # Hum
 
-Hum generates HTML from your SASS or CSS.
+Hum generates HTML from your SASS, SCSS or CSS.
 
 `gem install hum`
 
-Here's an example of what he can do:
+## SASS to HTML
 
-    #He'll eat this CSS
-    .foo{
-      border-width: 1px;
-    }
-    .foo .bar{
-      font-size: 12px;
-    }
-    .foo .bar p{
-      color: black;
-    }
+`hum [stylesheet].sass`
+
+		#He'll eat this SASS
+		.foo
+			color: white
+			.bar
+				color: black
+				.baz
+					color: red
 
     #And crap out this HTML
-    <div class="foo">
-      <div class="bar">
-        <p></p>
-      </div>
-    </div>
+		<div class="foo">
+			<div class="bar">
+				<div class="baz"></div>
+			</div>
+		</div>
 
-To do that run
+## SCSS to HTML
+
+`hum [stylesheet].scss`
+
+		#He'll eat this SCSS
+		.foo {
+			color: white;
+			.bar {
+				color: black;
+				.baz {
+					color: red;
+				}
+			}
+		}
+
+		#And crap out this HTML
+		<div class="foo">
+			<div class="bar">
+				<div class="baz"></div>
+			</div>
+		</div>
+
+## CSS to HTML
 
 `hum [stylesheet].css`
 
-You can also watch a directory for changes by using
+		#He'll eat this CSS
+		.foo{
+			border-width: 1px;
+		}
+		.foo .bar{
+			font-size: 12px;
+		}
+		.foo .bar p{
+			color: black;
+		}
+
+		#And crap out this HTML
+		<div class="foo">
+			<div class="bar">
+				<div class="baz"></div>
+			</div>
+		</div>
+
+You can also watch a directory for changes to your SASS and SCSS files by using
 
 `hum --watch`
 
-He can't generate HTML from SASS directly yet, so you must specify a CSS file.
+## Notes
+
+Just so you know, hum doesn't work well with mixins that include selectors yet.
