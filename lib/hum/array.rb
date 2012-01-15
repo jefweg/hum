@@ -28,34 +28,57 @@ class Array
       found = self.find_line(line_number)
     end
 
-    #return the right parent
-    found
+    #return the right parent line
+    found[:line]
   end
   
-  #find the children from a line to a hash
-  def find_all_kids(line, to_line, kids = [])
-      
-    #find the parent
-    parent = self.find_line(line)
+  def find_kids(hash, kids = [])
     
-    #target the line number
-    line_number = line + 1
+    #get the next line number
+    next_line = hash[:line] + 1
     
-    #find the first found
-    found = self.find_line(line_number)
+    #find the next one
+    found = self.find_line(next_line)
     
-    until found.nil? or line_number == to_line or parent[:tab] == found[:tab]
-      #add the line to the array
-      kids << found
+    until found.nil? or hash[:tab] == found[:tab]
       
-      #increment the line number
-      line_number += 1
+      #collect it
+      kids << found[:line]
       
-      #find the new found
-      found = self.find_line(line_number)
+      #increment
+      next_line += 1
+      
+      #find the next one
+      found = self.find_line(next_line)
     end
     
-    #return the kids
+    #return all kids
+    kids
+  end
+  
+  def find_extra_kids(hash, kids = [])
+    
+    #find the parent
+    parent = self.find_line(hash[:parent])
+    
+    #target the next line
+    next_line = hash[:parent] + 1
+
+    #find the next line
+    found = self.find_line(next_line)
+    
+    until found.nil? or next_line == hash[:line] or parent[:tab] == found[:tab]
+      
+      #collect it
+      kids << found[:line]
+      
+      #increment
+      next_line += 1
+      
+      #find the next one
+      found = self.find_line(next_line)
+    end
+    
     kids
   end
 end

@@ -1,1 +1,0 @@
-[{:line=>1, :select=>["div"], :tab=>0}, {:line=>2, :select=>["p"], :tab=>1}, {:line=>3, :select=>["a"], :tab=>1}, {:line=>4, :select=>["div.red", "div.blue"], :tab=>0, :parent=>1}, {:line=>5, :select=>["div.black", "div.white"], :tab=>0, :parent=>1}]

@@ -76,7 +76,7 @@ module Hum
           #open css
           input = @files[:input]
           @machine = Engine.new
-          @machine.load(input)
+          @machine.load(input)          
           @machine.run
         rescue Exception => e
           puts e

@@ -1,1 +1,0 @@
-[{:line=>1, :select=>[".foo"], :tab=>0}, {:line=>2, :select=>[".bar"], :tab=>0}, {:line=>3, :select=>[".baz"], :tab=>0}]
