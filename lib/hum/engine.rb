@@ -4,6 +4,7 @@ require 'sass'
 require 'sass/css'
 require 'hum/string'
 require 'hum/array'
+require 'colored'
 
 module Hum
   #Hum
@@ -45,7 +46,7 @@ module Hum
         #close the output file
         @output_file.close()
 
-        puts "updated #{@output_name}!\n"
+        puts "updated #{@output_name}!\n".green
       end
       
       def run_haml
@@ -86,7 +87,8 @@ module Hum
           
         #if nothing then put error
         else
-          puts "implement ERROR"
+          puts "Hum only works with .scss, .sass and .css files.".red
+          exit 1
         end
       end
       

@@ -18,7 +18,8 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency 'sass'
-  s.add_dependency 'haml'
-  s.add_dependency 'fssm'
+  s.add_dependency 'sass', '>= 3.1.12'
+  s.add_dependency 'haml', '>= 3.1.4'
+  s.add_dependency 'fssm', '>= 0.2.7'
+  s.add_dependency 'colored', '>= 1.2'
 end
