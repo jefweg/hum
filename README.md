@@ -16,7 +16,7 @@ Hum generates HTML from your SASS, SCSS or CSS.
 				.baz
 					color: red
 
-    #And crap out this HTML
+		#And crap out this HTML
 		<div class="foo">
 			<div class="bar">
 				<div class="baz"></div>
