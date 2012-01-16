@@ -62,6 +62,11 @@ class HumText < Test::Unit::TestCase
     quick_test
   end
 
+  def test_anchor_links
+    @file = "anchor_links"
+    quick_test
+  end
+  
   private
 
   def quick_test

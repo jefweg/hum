@@ -334,6 +334,11 @@ module Hum
           tag = tag.gsub("%#", "%div#")
         end
         
+        #give all links an href
+        if tag.match("%a")
+          tag = tag.gsub("%a", "%a{:href=>'#'}")
+        end
+        
         tag
       end
       
