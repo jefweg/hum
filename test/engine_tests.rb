@@ -51,6 +51,11 @@ class HumText < Test::Unit::TestCase
     @file = "exclude_mixins"
     quick_test
   end
+
+  def test_direct_child
+    @file = "direct_child"
+    quick_test
+  end
   
   private
 

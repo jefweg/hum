@@ -106,6 +106,9 @@ module Hum
         #make sure tabs are two spaces
         @sass.gsub!(/\t/, "  ")
         
+        #make sure direct descendant is normal
+        @sass.gsub!(/ > /, " ")
+        
         #remove duplicate new lines
         @sass.gsub!(/\n+/, "\n")
       end
