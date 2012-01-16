@@ -42,8 +42,10 @@ class Array
     
     until found.nil? or hash[:tab] == found[:tab]
       
-      #collect it
-      kids << found[:line]
+      #collect it if not a mixin
+      if !found[:exclude]
+        kids << found[:line]
+      end
       
       #increment
       next_line += 1
@@ -69,9 +71,11 @@ class Array
     
     until found.nil? or next_line == hash[:line] or parent[:tab] == found[:tab]
       
-      #collect it
-      kids << found[:line]
-      
+      #collect it if not a mixin
+      if !found[:exclude]
+        kids << found[:line]
+      end
+    
       #increment
       next_line += 1
       

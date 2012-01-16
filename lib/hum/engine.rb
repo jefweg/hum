@@ -148,6 +148,9 @@ module Hum
         #process all mixins by fixing the tabs and removing the mixin
         _process_mixins
 
+        #process all special selectors, like pseudo elements
+        _process_special
+        
         @tree
       end
       
@@ -270,12 +273,13 @@ module Hum
             
             #if this is a mixin
             if code.match(/\+/)
-              hash[:mixin] = true
+              hash[:exclude] = true
+              
             #if this is a named mixin
             elsif code.match(/\=/)
               
               #ignore the hash on output
-              hash[:mixin] = true
+              hash[:exclude] = true
               
               #find kids
               kids = @tree.find_kids(hash)
@@ -290,6 +294,24 @@ module Hum
                 child[:tab] -= 1
               }
             end
+          end
+        }
+      end
+      
+      def _process_special
+        #in each line
+        @tree.each { |hash|
+          
+          #for each select
+          hash[:select].each do |code|
+            
+            #if this has a pseudo element
+            if code.match(/:/)
+              
+              #remove it
+              code.gsub!(/:.*/, "")
+            end
+            
           end
         }
       end
@@ -354,7 +376,7 @@ module Hum
         #time to build the HAML
         @tree.each do |hash|
           
-          if !hash[:mixin]
+          if hash[:exclude] != true
             
             extra = []
           
