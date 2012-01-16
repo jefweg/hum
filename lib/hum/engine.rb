@@ -261,9 +261,12 @@ module Hum
           
           #for each select
           hash[:select].each do |code|
-          
+            
             #if this is a mixin
-            if code.match(/\=/)
+            if code.match(/\+/)
+              hash[:mixin] = true
+            #if this is a named mixin
+            elsif code.match(/\=/)
               
               #ignore the hash on output
               hash[:mixin] = true

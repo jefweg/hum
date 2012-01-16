@@ -47,8 +47,8 @@ class HumText < Test::Unit::TestCase
     quick_test
   end
 
-  def test_remove_mixins
-    @file = "remove_mixins"
+  def test_exclude_mixins
+    @file = "exclude_mixins"
     quick_test
   end
   
