@@ -101,10 +101,19 @@ module Hum
       
       def clean_sass
         #remove all property: value; pairs
-        @sass.gsub!((/.*: .*/), "")
+        @sass.gsub!(/.*: .*/, "")
+        
+        #make sure tabs are two spaces
+        @sass.gsub!(/\t/, "  ")
+        
+        #make sure nested direct descendant is normal
+        @sass.gsub!(/\& > /, "")
+        
+        #make sure direct descendant is normal
+        @sass.gsub!(/ > /, " ")
         
         #remove duplicate new lines
-        @sass.gsub!((/\n+/), "\n")
+        @sass.gsub!(/\n+/, "\n")
       end
       
       def build_hashes
@@ -135,6 +144,12 @@ module Hum
         
         #process all tabs
         _process_tabs
+        
+        #process all mixins by fixing the tabs and removing the mixin
+        _process_mixins
+
+        #process all special selectors, like pseudo elements
+        _process_special
         
         @tree
       end
@@ -249,6 +264,58 @@ module Hum
         }
       end
       
+      def _process_mixins
+        #in each line
+        @tree.each { |hash|
+          
+          #for each select
+          hash[:select].each do |code|
+            
+            #if this is a mixin
+            if code.match(/\+/)
+              hash[:exclude] = true
+              
+            #if this is a named mixin
+            elsif code.match(/\=/)
+              
+              #ignore the hash on output
+              hash[:exclude] = true
+              
+              #find kids
+              kids = @tree.find_kids(hash)
+
+              #for each kid
+              kids.each { |kid|
+                
+                #find it
+                child = @tree.find_line(kid)
+                
+                #and reduce it by one
+                child[:tab] -= 1
+              }
+            end
+          end
+        }
+      end
+      
+      def _process_special
+        #in each line
+        @tree.each { |hash|
+          
+          #for each select
+          hash[:select].each do |code|
+            
+            #if this has a pseudo element
+            if code.match(/:/)
+              
+              #remove it
+              code.gsub!(/:.*/, "")
+            end
+            
+          end
+        }
+      end
+      
       def _grab_select(code)
         result = []
         temp = code.gsub(/\n/, "").gsub(/  /, "")
@@ -289,6 +356,11 @@ module Hum
           tag = tag.gsub("%#", "%div#")
         end
         
+        #give all links an href
+        if tag.match("%a")
+          tag = tag.gsub("%a", "%a{:href=>'#'}")
+        end
+        
         tag
       end
       
@@ -302,45 +374,50 @@ module Hum
         @haml += "\t%body\n"
         
         #time to build the HAML
-        @tree.each do |hash| 
-          extra = []
+        @tree.each do |hash|
           
-          #if there's a parent, find the extra kids
-          if !hash[:parent].nil?
-            extra = @tree.find_extra_kids(hash)
-          end
+          if hash[:exclude] != true
+            
+            extra = []
           
-          #for each generate the HAML line
-          hash[:haml].each { |haml_tag| 
-            
-            #if no extra, just normal
-            if extra.empty?  
-              @haml += _generate_haml_line(haml_tag, hash)
-            
-            #else extra
-            else  
-              
-              #this hash has extra kids
-              hash[:extra] = true
-              
-              @haml += _generate_haml_line(haml_tag, hash)
-              
-              #for each kid
-              extra.each { |line|
-                
-                #get the hash
-                extra_hash = @tree.find_line(line)
-                
-                #for each generate the HAML line
-                extra_hash[:haml].each do |haml_tag|
-                  
-                  #do it
-                  @haml += _generate_haml_line(haml_tag, extra_hash)
-                end
-              }
+            #if there's a parent, find the extra kids
+            if !hash[:parent].nil?
+              extra = @tree.find_extra_kids(hash)
             end
+          
+            #for each generate the HAML line
+            hash[:haml].each { |haml_tag| 
+            
+              #if no extra, just normal
+              if extra.empty?  
+                @haml += _generate_haml_line(haml_tag, hash)
+            
+              #else extra
+              else  
+              
+                #this hash has extra kids
+                hash[:extra] = true
+              
+                @haml += _generate_haml_line(haml_tag, hash)
+              
+                #for each kid
+                extra.each { |line|
+                
+                  #get the hash
+                  extra_hash = @tree.find_line(line)
+                
+                  #for each generate the HAML line
+                  extra_hash[:haml].each do |haml_tag|
+                  
+                    #do it
+                    @haml += _generate_haml_line(haml_tag, extra_hash)
+                  end
+                }
+              end
 
-          }
+            }
+        
+          end
         end
         @haml
       end
