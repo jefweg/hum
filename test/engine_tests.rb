@@ -46,6 +46,11 @@ class HumText < Test::Unit::TestCase
     @file = "parent_siblings"
     quick_test
   end
+
+  def test_remove_mixins
+    @file = "remove_mixins"
+    quick_test
+  end
   
   private
 

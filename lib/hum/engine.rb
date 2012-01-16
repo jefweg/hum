@@ -101,10 +101,13 @@ module Hum
       
       def clean_sass
         #remove all property: value; pairs
-        @sass.gsub!((/.*: .*/), "")
+        @sass.gsub!(/.*: .*/, "")
+        
+        #make sure tabs are two spaces
+        @sass.gsub!(/\t/, "  ")
         
         #remove duplicate new lines
-        @sass.gsub!((/\n+/), "\n")
+        @sass.gsub!(/\n+/, "\n")
       end
       
       def build_hashes
@@ -135,6 +138,9 @@ module Hum
         
         #process all tabs
         _process_tabs
+        
+        #process all mixins by fixing the tabs and removing the mixin
+        _process_mixins
         
         @tree
       end
@@ -249,6 +255,36 @@ module Hum
         }
       end
       
+      def _process_mixins
+        #in each line
+        @tree.each { |hash|
+          
+          #for each select
+          hash[:select].each do |code|
+          
+            #if this is a mixin
+            if code.match(/\=/)
+              
+              #ignore the hash on output
+              hash[:mixin] = true
+              
+              #find kids
+              kids = @tree.find_kids(hash)
+
+              #for each kid
+              kids.each { |kid|
+                
+                #find it
+                child = @tree.find_line(kid)
+                
+                #and reduce it by one
+                child[:tab] -= 1
+              }
+            end
+          end
+        }
+      end
+      
       def _grab_select(code)
         result = []
         temp = code.gsub(/\n/, "").gsub(/  /, "")
@@ -302,45 +338,50 @@ module Hum
         @haml += "\t%body\n"
         
         #time to build the HAML
-        @tree.each do |hash| 
-          extra = []
+        @tree.each do |hash|
           
-          #if there's a parent, find the extra kids
-          if !hash[:parent].nil?
-            extra = @tree.find_extra_kids(hash)
-          end
+          if !hash[:mixin]
+            
+            extra = []
           
-          #for each generate the HAML line
-          hash[:haml].each { |haml_tag| 
-            
-            #if no extra, just normal
-            if extra.empty?  
-              @haml += _generate_haml_line(haml_tag, hash)
-            
-            #else extra
-            else  
-              
-              #this hash has extra kids
-              hash[:extra] = true
-              
-              @haml += _generate_haml_line(haml_tag, hash)
-              
-              #for each kid
-              extra.each { |line|
-                
-                #get the hash
-                extra_hash = @tree.find_line(line)
-                
-                #for each generate the HAML line
-                extra_hash[:haml].each do |haml_tag|
-                  
-                  #do it
-                  @haml += _generate_haml_line(haml_tag, extra_hash)
-                end
-              }
+            #if there's a parent, find the extra kids
+            if !hash[:parent].nil?
+              extra = @tree.find_extra_kids(hash)
             end
+          
+            #for each generate the HAML line
+            hash[:haml].each { |haml_tag| 
+            
+              #if no extra, just normal
+              if extra.empty?  
+                @haml += _generate_haml_line(haml_tag, hash)
+            
+              #else extra
+              else  
+              
+                #this hash has extra kids
+                hash[:extra] = true
+              
+                @haml += _generate_haml_line(haml_tag, hash)
+              
+                #for each kid
+                extra.each { |line|
+                
+                  #get the hash
+                  extra_hash = @tree.find_line(line)
+                
+                  #for each generate the HAML line
+                  extra_hash[:haml].each do |haml_tag|
+                  
+                    #do it
+                    @haml += _generate_haml_line(haml_tag, extra_hash)
+                  end
+                }
+              end
 
-          }
+            }
+        
+          end
         end
         @haml
       end
