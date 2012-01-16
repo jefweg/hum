@@ -106,6 +106,9 @@ module Hum
         #make sure tabs are two spaces
         @sass.gsub!(/\t/, "  ")
         
+        #make sure nested direct descendant is normal
+        @sass.gsub!(/\& > /, "")
+        
         #make sure direct descendant is normal
         @sass.gsub!(/ > /, " ")
         
@@ -144,7 +147,7 @@ module Hum
         
         #process all mixins by fixing the tabs and removing the mixin
         _process_mixins
-        
+
         @tree
       end
       

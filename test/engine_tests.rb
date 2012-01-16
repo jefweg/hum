@@ -56,7 +56,12 @@ class HumText < Test::Unit::TestCase
     @file = "direct_child"
     quick_test
   end
-  
+
+  def test_nested_direct_child
+    @file = "nested_direct_child"
+    quick_test
+  end
+
   private
 
   def quick_test
