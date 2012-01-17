@@ -32,7 +32,7 @@ module Hum
         @directory = File.dirname(file)
         
         #the output path
-        @output_path = File.absolute_path(file).gsub(/\..*/, ".html")
+        @output_path = File.expand_path(file).gsub(/\..*/, ".html")
         
         #the name of the output file
         @output_name = File.basename(@output_path)
@@ -53,7 +53,7 @@ module Hum
         #close the output file
         @output_file.close()
         
-        puts "updated #{@output_name}".green
+        puts "updated #{@output_name}".bold
       end
       
       def run_haml
@@ -94,7 +94,7 @@ module Hum
 
         #if nothing then put error
         else
-          puts "Hum only works with .scss, .sass and .css files.".red
+          puts "Hum only works with .scss, .sass and .css files.".bold
           exit 1
         end
       end
