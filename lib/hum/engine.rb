@@ -32,7 +32,7 @@ module Hum
         @directory = File.dirname(file)
         
         #the output path
-        @output_path = File.absolute_path(file).gsub(/\..*/, ".html")
+        @output_path = File.expand_path(file).gsub(/\..*/, ".html")
         
         #the name of the output file
         @output_name = File.basename(@output_path)
@@ -53,7 +53,7 @@ module Hum
         #close the output file
         @output_file.close()
         
-        puts "updated #{@output_name}".green
+        puts "updated #{@output_name}".bold
       end
       
       def run_haml
@@ -74,27 +74,34 @@ module Hum
       end
       
       def render_sass
+        opts = { :cache => false, :read_cache => true, :syntax => :scss }
+        
         #read content
         content = @input_file.read
+        
+        #remove /**/ comments
+        content.gsub!(/.*\/\*([\s\S]*?)\*\//, "")
 
-        #remove all comments
-        content.gsub!(/\/\*([\s\S]*?)\*\//, "")
-
+        #remove // coments
+        content.gsub!(/.*\/\/.*/, "")
+        
         #if CSS render SASS
         if @input_name.match(/\.css/)
           @sass = Sass::CSS.new(content).render(:sass)
 
         #if SCSS convert to SASS
         elsif @input_name.match(/\.scss/)
-          @sass = ::Sass::Engine.new(content, { :cache => false, :read_cache => true, :syntax => :scss }).to_tree.send("to_sass")
+          @sass = ::Sass::Engine.new(content, opts).to_tree.send("to_sass")
 
         #if sass keep as it
         elsif @input_name.match(/\.sass/)
-          @sass = content
-
+          #doing this at the moment to make sure the sass is formatted correctly, as using sass-convert does some nifty formatting
+          scss = ::Sass::Engine.new(content, {:cache => false, :read_cache => true, :syntax => :sass}).to_tree.send("to_scss")
+          @sass = ::Sass::Engine.new(scss, opts).to_tree.send("to_sass")
+          
         #if nothing then put error
         else
-          puts "Hum only works with .scss, .sass and .css files.".red
+          puts "Hum only works with .scss, .sass and .css files.".bold
           exit 1
         end
       end
