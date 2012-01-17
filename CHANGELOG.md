@@ -9,3 +9,7 @@
 ## 0.0.3
 
 * Added support for other bits of .sass, better processing
+
+## 0.0.4
+
+* Will now run in ruby 1.8.7, support for removing comments
