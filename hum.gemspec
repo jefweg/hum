@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Jeffrey Wegesin"]
   s.email       = ["jeff@jwegesin.com"]
   s.homepage    = ""
-  s.summary     = %q{Generate HTML from your SASS or CSS}
-  s.description = %q{Hum generates HTML from your SASS or CSS. View more info at github.com/jefweg/hum}
+  s.summary     = %q{Create HTML from your sass, scss or css documents}
+  s.description = %q{Hum creates HTML from your sass, scss and css documents. View more info at github.com/jefweg/hum}
 
   s.rubyforge_project = "hum"
 
