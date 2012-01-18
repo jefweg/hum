@@ -1,3 +1,15 @@
 .foo
-	.bar:last-of-type
+	div:first-of-type
+		color: black
+	div:last-of-type
 		color: white
+	div:only-of-type
+		color: red
+	.bar
+		color: black
+		&:first-of-type
+			color: white
+		&:last-of-type
+			color: red
+		&:only-of-type
+			font-size: 12px
