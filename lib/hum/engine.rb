@@ -85,6 +85,9 @@ module Hum
         #remove // coments
         content.gsub!(/.*\/\/.*/, "")
         
+        #remove @imports
+        content.gsub!(/.*@import.*/, "")
+        
         #if CSS render SASS
         if @input_name.match(/\.css/)
           @sass = Sass::CSS.new(content).render(:sass)
