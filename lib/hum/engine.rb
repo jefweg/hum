@@ -311,21 +311,35 @@ module Hum
       def _process_special
         #in each line
         @tree.each { |hash|
-          
+
           #for each select
           hash[:select].each do |code|
-            
+
             #if this has a pseudo element
             if code.match(/:/)
+
+              #exclude the hash
+              hash[:exclude] = true
               
-              #remove it
-              code.gsub!(/:.*/, "")
+              #and any children of the hash
+              if hash[:kids].length > 0
+                
+                #for each kid
+                hash[:kids].each do |kid|
+                  
+                  #find the child
+                  child = @tree.find_line(kid)
+                  
+                  #exclude the child
+                  child[:exclude] = true
+                end
+              end
             end
-            
+
           end
         }
       end
-      
+
       def _grab_select(code)
         result = []
         temp = code.gsub(/\n/, "").gsub(/  /, "")
