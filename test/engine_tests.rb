@@ -81,7 +81,12 @@ class HumText < Test::Unit::TestCase
     @file = "imports"
     quick_test
   end
-  
+
+  def test_remove_dup_children
+    @file = "remove_dup_children"
+    quick_test
+  end
+
   private
 
   def quick_test
