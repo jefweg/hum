@@ -382,7 +382,7 @@ module Hum
         @haml += "\t%head\n"
         @haml += "\t\t%link{:type => 'text/css', :rel => 'stylesheet', :href => '#{@input_name.gsub(/\..*/, ".css")}'}\n"
         @haml += "\t%body\n"
-        
+
         #time to build the HAML
         @tree.each do |hash|
           
@@ -415,12 +415,16 @@ module Hum
                 
                   #get the hash
                   extra_hash = @tree.find_line(line)
-                
-                  #for each generate the HAML line
-                  extra_hash[:haml].each do |haml_tag|
                   
+                  #for each generate the HAML line
+                  extra_hash[:haml].each do |extra_haml_tag|
+                    
+                    ignore = _ignore_tag?(extra_haml_tag, hash)
+                    
                     #do it
-                    @haml += _generate_haml_line(haml_tag, extra_hash)
+                    if ignore == false
+                      @haml += _generate_haml_line(extra_haml_tag, extra_hash)
+                    end
                   end
                 }
               end
@@ -473,6 +477,35 @@ module Hum
         end
 
         haml
+      end
+      
+      
+      def _ignore_tag?(extra_haml_tag, hash)    
+        #should we ignore?
+        ignore = false
+        
+        #if this hash has kids, ensure no duplicates
+        if hash[:kids].length > 0
+          
+          #for each kid
+          hash[:kids].each do |kid|
+            
+            #find it
+            child = @tree.find_line(kid)
+            
+            #for each haml tag
+            child[:haml].each { |kid_haml_tag|
+              
+              #if they match, ignore it cause it's already there
+              if extra_haml_tag == kid_haml_tag
+                ignore = true
+              end
+            }
+          end
+          
+        end
+        
+        ignore
       end
       
       #insert the inner content for HTML tags
