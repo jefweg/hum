@@ -77,6 +77,11 @@ class HumText < Test::Unit::TestCase
     quick_test
   end
 
+  def test_imports
+    @file = "imports"
+    quick_test
+  end
+  
   private
 
   def quick_test
