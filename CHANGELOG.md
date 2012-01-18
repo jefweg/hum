@@ -13,3 +13,7 @@
 ## 0.0.4
 
 * Will now run in ruby 1.8.7, support for removing comments
+
+## 0.0.5
+
+* Added better support for pseudo elements, fixed some bugs
