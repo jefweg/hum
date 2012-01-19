@@ -1,6 +1,6 @@
 # Hum
 
-Hum generates HTML from your SASS, SCSS or CSS.
+Hum generates HTML from your SASS, SCSS or CSS. **For now you need Ruby 1.9 and above.** 
 
 `gem install hum`
 
