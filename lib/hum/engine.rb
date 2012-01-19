@@ -380,8 +380,26 @@ module Hum
           tag = tag.gsub("%#", "%div#")
         end
         
-        #give all links an href
-        if tag.match("%a")
+        #if anchor with class
+        if tag.match(/%a\./) 
+          
+          #get the data
+          data = /%a\.(?<tag_class>.*)/.match(tag)
+          
+          #make the tag
+          tag = "%a{:href=>'#',:class=>'#{data[:tag_class]}'}"
+        
+        #if anchor with ID  
+        elsif tag.match(/%a\#/)
+      
+          #get the data
+          data = /%a\#(?<tag_id>.*)/.match(tag)
+          
+          #make the tag
+          tag = "%a{:href=>'#',:id=>'#{data[:tag_id]}'}"
+          
+        #else just give it an link
+        elsif tag.match("%a")
           tag = tag.gsub("%a", "%a{:href=>'#'}")
         end
         
@@ -390,7 +408,6 @@ module Hum
       
       #Output the HAML
       def _output_haml
-        
         #convert to HAML
         @haml = "%html\n"
         @haml += "\t%head\n"
