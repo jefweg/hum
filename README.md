@@ -4,6 +4,10 @@ Hum generates HTML from your SASS, SCSS or CSS.
 
 `gem install hum`
 
+If you're using Windows also install this gem.
+
+`gem install win32console`
+
 ## SASS to HTML
 
 `hum [stylesheet].sass`
