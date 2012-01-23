@@ -87,6 +87,11 @@ class HumText < Test::Unit::TestCase
     quick_test
   end
 
+  def test_input_elements
+    @file = "input_elements"
+    quick_test
+  end
+  
   private
 
   def quick_test

@@ -286,7 +286,7 @@ module Hum
               hash[:exclude] = true
               
             #if this is a named mixin
-            elsif code.match(/\=/)
+            elsif code.match(/^\=/)
               
               #ignore the hash on output
               hash[:exclude] = true
@@ -403,6 +403,16 @@ module Hum
           tag = tag.gsub("%a", "%a{:href=>'#'}")
         end
         
+        #if the tag has an attribute selector
+        if tag.match(/%.*\[.*\=.*\]/)
+          
+          #get the data
+          data = /(?<tag_element>%.*)\[(?<tag_attribute>.*)\=(?<tag_value>.*)\]/.match(tag)
+          
+          tag = data[:tag_element] + "{:#{data[:tag_attribute]}=>'#{data[:tag_value]}'}"
+          #make the tag
+        end
+        
         tag
       end
       
@@ -413,19 +423,19 @@ module Hum
         @haml += "\t%head\n"
         @haml += "\t\t%link{:type => 'text/css', :rel => 'stylesheet', :href => '#{@input_name.gsub(/\..*/, ".css")}'}\n"
         @haml += "\t%body\n"
-
+        
         #time to build the HAML
         @tree.each do |hash|
           
           if hash[:exclude] != true
             
             extra = []
-          
+            
             #if there's a parent, find the extra kids
             if !hash[:parent].nil?
               extra = @tree.find_extra_kids(hash)
             end
-          
+            
             #for each generate the HAML line
             hash[:haml].each { |haml_tag| 
             
