@@ -17,3 +17,7 @@
 ## 0.0.5
 
 * Added better support for pseudo elements, fixed some bugs
+
+## 0.0.6
+
+* Added basic support for attribute selectors
